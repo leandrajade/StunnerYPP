@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Carousel</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+
+                font-family: 'Montserrat', sans-serif;
+            }
+
+            h1 {
+                padding: 20px 0;
+            }
+            .container {
+                margin: 0 auto;
+                width: 60vmin;
+                height: 60vmin;
+                position: relative;
+                overflow: hidden;
+            }
+            .carousel {
+                height: 100%;
+                display: flex;
+            }
+            .carousel-inner {
+                min-width: 100%;
+                position: relative;
+            }
+            .carousel-inner img {
+                width: 100%;
+                height: 100%;
+                object-fit: scale-down;
+            }
+
+        </style>
+    </head>
+    <body>
+        <h1>My Carousel</h1>
+        <div class="container">
+            <div class="carousel">
+                <div class="carousel-inner">
+                    <img alt="First" src="img/hawaiian-pizzasmoked.jpg" />
+                </div>
+                <div class="carousel-inner">
+                    <img alt="Second" src="img/japanese.jpg" />
+                </div>
+                <div class="carousel-inner">
+                    <img alt="Third" src="img/mac-n-cheese.jpg" />
+                </div>
+                <div class="carousel-inner">
+                    <img alt="Fourth" src="img/seafood-pasta.jpg" />
+                </div>
+                <div  class="carousel-inner">
+                    <img alt="Fifth" src="img/spaghetti.jpg" />
+                </div>
+            </div>
+        </div>
+       
+        <script>
+            const container = document.querySelector('.container');
+            const carousel = document.querySelector('.carousel');
+            let contentImg = document.querySelectorAll('.carousel-inner');
+
+            // image counter
+            let slideIndex = 0;
+
+            // attaching a copy of cloned image at the end of the container
+            const firstClone = contentImg[0].cloneNode(true);
+            firstClone.id = 'first-clone';
+            carousel.append(firstClone);
+
+            // this is for managing the width of the container that is currently being displayed in the screen
+            const slideWidth = contentImg[slideIndex].clientWidth;
+
+            const slideShow = () => {
+                setInterval(() => {
+                    if (slideIndex >= contentImg.length - 1) return;
+                    slideIndex++;
+                    carousel.style.transform = `translateX(${-slideWidth * slideIndex}px)`;
+                    carousel.style.transition = '.5s ease-out';
+                }, 1000);
+            }
+
+            carousel.addEventListener('transitionend', () => {
+                contentImg = document.querySelectorAll('.carousel-inner');    // this is to refresh the content var so the cloned elements will be included
+                if(contentImg[slideIndex].id === firstClone.id){
+                    carousel.style.transition = 'none';
+                    slideIndex = 0;
+                    carousel.style.transform = `translateX(${-slideWidth * slideIndex}px)`;
+                }
+
+            })
+
+            slideShow();
+
+        </script>
+    </body>
+</html>
